@@ -1,5 +1,5 @@
 import React from 'react';
-import { GoogleMap, LoadScript } from '@react-google-maps${import.meta.env.VITE_BASE_URL}/api';
+import { GoogleMap, LoadScript } from '@react-google-maps/api';
 
 const Map = () => {
   const mapStyles = {
