@@ -21,7 +21,7 @@ const ActiveDonation = ({ onClose }) => {
 
     const fetchActiveDonation = async () => {
       try {
-        const response = await axios.get('/api/v1/users/active-donation', {
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/users/active-donation`, {
           withCredentials: true,
         });
         console.log(response.data);

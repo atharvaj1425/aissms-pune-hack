@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import { GoogleMap, LoadScript } from "@react-google-maps${import.meta.env.VITE_BASE_URL}/api";
 import { Card, Title, Text } from "@tremor/react"; // Import components from Tremor
 
 // Define styles

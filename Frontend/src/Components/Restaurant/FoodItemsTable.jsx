@@ -9,7 +9,7 @@
 //   useEffect(() => {
 //     const fetchFoodItems = async () => {
 //       try {
-//         const response = await axios.get("/api/v1/restaurants/getFoodItems", {
+//         const response = await axios.get("${import.meta.env.VITE_BASE_URL}/api/v1/restaurants/getFoodItems", {
 //           withCredentials: true,
 //         });
 //         setFoodItems(response.data.data);
@@ -25,7 +25,7 @@
 //   const fetchFoodItems = async () => {
 //     try {
 //       console.log("Fetching food items...");
-//       const response = await axios.get("/api/v1/restaurants/getFoodItems", {
+//       const response = await axios.get("${import.meta.env.VITE_BASE_URL}/api/v1/restaurants/getFoodItems", {
 //         withCredentials: true,
 //       });
 //       console.log("Received food items:", response.data);
@@ -39,7 +39,7 @@
 //   const handleUseItem = async (itemId) => {
 //     try {
 //         const response = await axios.put(
-//             `/api/v1/restaurants/updateFoodItemStatus/${itemId}`,
+//             `${import.meta.env.VITE_BASE_URL}/api/v1/restaurants/updateFoodItemStatus/${itemId}`,
 //             { status: "used" }, // Now correctly passing the new status
 //             { withCredentials: true }
 //         );
@@ -151,7 +151,7 @@ const FoodItemsTable = () => {
   const fetchFoodItems = async () => {
     try {
       console.log("Fetching food items...");
-      const response = await axios.get("/api/v1/restaurants/getFoodItems", {
+      const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/restaurants/getFoodItems`, {
         withCredentials: true,
       });
       console.log("Received food items:", response.data);
@@ -185,7 +185,7 @@ const FoodItemsTable = () => {
 
     try {
       const response = await axios.put(
-        `/api/v1/restaurants/updateFoodItemStatus/${selectedItem._id}`,
+        `${import.meta.env.VITE_BASE_URL}/api/v1/restaurants/updateFoodItemStatus/${selectedItem._id}`,
         { status: newStatus, quantity: newQuantity },
         { withCredentials: true }
       );

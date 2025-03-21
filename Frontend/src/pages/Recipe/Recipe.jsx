@@ -10,7 +10,7 @@ const Recipe = () => {
   const [selectedMeal, setSelectedMeal] = useState(null);
 
   const searchMeals = (ingredient) => {
-    fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`)
+    fetch(`https://www.themealdb.com${import.meta.env.VITE_BASE_URL}/api/json/v1/1/filter.php?i=${ingredient}`)
       .then(response => response.json())
       .then(data => {
         if (data.meals) {
@@ -22,7 +22,7 @@ const Recipe = () => {
   };
 
   const getMealRecipe = (mealId) => {
-    fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`)
+    fetch(`https://www.themealdb.com${import.meta.env.VITE_BASE_URL}/api/json/v1/1/lookup.php?i=${mealId}`)
       .then(response => response.json())
       .then(data => setSelectedMeal(data.meals[0]));
   };

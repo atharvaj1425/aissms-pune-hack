@@ -8,7 +8,7 @@ const DonationHistory = () => {
 
   useEffect(() => {
     axios
-      .get("/api/v1/volunteers/donation-history")
+      .get(`${import.meta.env.VITE_BASE_URL}/api/v1/volunteers/donation-history`)
       .then((response) => {
         if (response.data.data && response.data.data.length > 0) {
           setDonations(response.data.data);

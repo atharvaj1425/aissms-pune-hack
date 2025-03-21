@@ -21,7 +21,7 @@ const DailyPrice = () => {
     setLoading(true);
 
     
-    const apiUrl = `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001941fd059a6204b09578c722339d3694d&format=json&filters%5Bstate.keyword%5D=${state}&filters%5Bdistrict%5D=${district}&filters%5Bmarket%5D=${market}&filters%5Bcommodity%5D=${commodity}`;
+    const apiUrl = `https:/${import.meta.env.VITE_BASE_URL}/api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001941fd059a6204b09578c722339d3694d&format=json&filters%5Bstate.keyword%5D=${state}&filters%5Bdistrict%5D=${district}&filters%5Bmarket%5D=${market}&filters%5Bcommodity%5D=${commodity}`;
 
     fetch(apiUrl)
       .then(response => response.json())

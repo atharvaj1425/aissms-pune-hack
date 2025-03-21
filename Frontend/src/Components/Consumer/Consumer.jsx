@@ -15,7 +15,7 @@ const Consumer = () => {
   const fetchFoodItems = async () => {
     try {
       console.log("Fetching food items...");
-      const response = await axios.get("/api/v1/users/getFoodItems", {
+      const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/users/getFoodItems`, {
         withCredentials: true,
       });
       console.log("Received food items:", response.data);
@@ -50,7 +50,7 @@ const Consumer = () => {
     try {
       console.log("Updating food item status...");
       const response = await axios.put(
-        `/api/v1/users/updateFoodItemStatus/${selectedItem._id}`,
+        `${import.meta.env.VITE_BASE_URL}/api/v1/users/updateFoodItemStatus/${selectedItem._id}`,
         { status: newStatus, quantity: newQuantity },
         { withCredentials: true }
       );

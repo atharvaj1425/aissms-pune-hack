@@ -84,7 +84,7 @@ const Login = ({ closeModal }) => {
         const userData = { email: formData.email, password: formData.password };
 
         try {
-            const response = await axios.post("/api/v1/auth/login", userData);
+            const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/login`, userData);
             console.log(response);
 
             if (response.status === 200) {
@@ -142,7 +142,7 @@ const Login = ({ closeModal }) => {
         // Function to send OTP
     const sendOtpHandler = async () => {
         try {
-            const response = await axios.post("/api/v1/auth/send-otp", { email: formData.email });
+            const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/send-otp`, { email: formData.email });
             if (response.data.success) {
                 toast.success("OTP sent to your email!");
                 setShowOtpModal(true); // Show OTP modal
@@ -179,7 +179,7 @@ const registerHandler = async (e) => {
 
     try {
         // Step 1: Send OTP to the user's email
-        const response = await axios.post("/api/v1/auth/send-otp", { email: formData.email });
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/send-otp`, { email: formData.email });
         if (response.data.success) {
             toast.success("OTP sent to your email!");
             setShowOtpModal(true); // Show OTP modal
@@ -211,7 +211,7 @@ const verifyOtpAndRegister = async () => {
         // Add OTP to the form data
         formDataToSend.append("otp", otp);
 
-        const response = await axios.post("/api/v1/auth/register", formDataToSend, {
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/register`, formDataToSend, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
