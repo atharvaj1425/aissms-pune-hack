@@ -84,7 +84,7 @@ const Login = ({ closeModal }) => {
         const userData = { email: formData.email, password: formData.password };
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/login`, userData);
+            const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/login`, userData, { withCredentials: true });
             console.log(response);
 
             if (response.status === 200) {
