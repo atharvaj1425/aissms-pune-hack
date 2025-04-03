@@ -290,19 +290,19 @@ const HomePage = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-center text-green-800 mb-12">What People Say</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="bg-white p-6 rounded-lg shadow-lg transform hover:-translate-y-2 transition duration-300">
-              <img src="https://randomuser.me${import.meta.env.VITE_BASE_URL}/api/portraits/men/1.jpg" alt="User" className="w-16 h-16 rounded-full mx-auto mb-4"/>
+              <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User" className="w-16 h-16 rounded-full mx-auto mb-4"/>
               <p className="text-gray-600 italic mb-4">"NourishAI has made it so easy for our restaurant to contribute to the community."</p>
               <h4 className="font-semibold text-green-800">Atharva Ajagekar</h4>
               <p className="text-sm text-green-600">Restaurant Owner</p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-lg transform hover:-translate-y-2 transition duration-300 " data-aos="fade-right" data-aos-duration="1000">
-              <img src="https://randomuser.me${import.meta.env.VITE_BASE_URL}/api/portraits/women/1.jpg" alt="User" className="w-16 h-16 rounded-full mx-auto mb-4"/>
+              <img src="https://randomuser.me/api/portraits/women/1.jpg" alt="User" className="w-16 h-16 rounded-full mx-auto mb-4"/>
               <p className="text-gray-600 italic mb-4">"The platform has streamlined our food distribution process significantly."</p>
               <h4 className="font-semibold text-green-800">Nikita Padhye</h4>
               <p className="text-sm text-green-600">NGO Director</p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-lg transform hover:-translate-y-2 transition duration-300 " data-aos="fade-right" data-aos-duration="1000">
-              <img src="https://randomuser.me${import.meta.env.VITE_BASE_URL}/api/portraits/men/2.jpg" alt="User" className="w-16 h-16 rounded-full mx-auto mb-4"/>
+              <img src="https://randomuser.me/api/portraits/men/2.jpg" alt="User" className="w-16 h-16 rounded-full mx-auto mb-4"/>
               <p className="text-gray-600 italic mb-4">"Proud to be part of this movement to reduce food waste."</p>
               <h4 className="font-semibold text-green-800">Tejas Shinde</h4>
               <p className="text-sm text-green-600">Volunteer</p>
