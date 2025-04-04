@@ -1,6 +1,3 @@
-Below is the complete content for your README.md file in Markdown format. You can copy and paste this content into a file named `README.md` in your repository.
-
-```markdown
 # Surplus Food Redistribution Platform
 
 ## Overview
@@ -193,7 +190,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Contact
 
-For questions or further information, please contact [your-email@example.com](mailto:your-email@example.com).
-```
-
-Simply adjust any parts of the file (such as URLs, database names, or contact information) to suit your project's specifics.
+For questions or further information, please contact [jamdadeatharva14@gmail.com](mailto:your-jamdadeatharva14@gmail.coms).
