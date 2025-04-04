@@ -21,7 +21,7 @@ const FoodDonationHistory = () => {
           return;
         }
 
-        const response = await axios.get('${import.meta.env.VITE_BASE_URL}/api/v1/restaurants/donationHistory', {
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/restaurants/donationHistory`, {
           withCredentials: true,
         });
 
