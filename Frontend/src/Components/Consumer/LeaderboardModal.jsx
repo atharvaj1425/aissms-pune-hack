@@ -10,9 +10,7 @@ const LeaderboardModal = ({ onClose }) => {
         const fetchLeaderboard = async () => {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/users/user-ranking`, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-                    }
+                    withCredentials: true,
                 });
                 setLeaderboardData(response.data.data);
             } catch (err) {

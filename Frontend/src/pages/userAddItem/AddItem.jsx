@@ -71,7 +71,9 @@ const FoodInventory = ({ closeModal }) => {
     }
 
     try {
-      await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/users/addFoodItem`, formData);
+      await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/users/addFoodItem`, formData, {
+        withCredentials: true,
+      });
       
       toast.success('Food item added successfully!');
       
@@ -80,6 +82,7 @@ const FoodInventory = ({ closeModal }) => {
       }, 1000);
     } catch (error) {
       toast.error('Failed to add food item. Please try again later.');
+      console.log(error);
     }
   };
 

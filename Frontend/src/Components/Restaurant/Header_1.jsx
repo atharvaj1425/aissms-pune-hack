@@ -10,7 +10,7 @@ const Header_1 = ({ accessToken }) => {
     const fetchFoodItems = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/restaurants/getFoodItems`, {
-          headers: { Authorization: `Bearer ${accessToken}` },
+          
           withCredentials: true,
         });
         const items = response.data.data || [];
@@ -38,7 +38,7 @@ const Header_1 = ({ accessToken }) => {
     const fetchWastePrevented = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/restaurants/donationHistory`, {
-          headers: { Authorization: `Bearer ${accessToken}` },
+          
           withCredentials: true,
         });
         const donations = response.data.data || [];

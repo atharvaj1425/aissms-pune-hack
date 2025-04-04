@@ -10,9 +10,7 @@ const RestaurantLeaderboardModal = ({ onClose }) => {
         const fetchLeaderboard = async () => {
             try {
                 const response = await axios.get('${import.meta.env.VITE_BASE_URL}/api/v1/restaurants/restaurant-ranking', {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-                    }
+                    withCredentials: true,
                 });
                 setLeaderboardData(response.data.data);
             } catch (err) {

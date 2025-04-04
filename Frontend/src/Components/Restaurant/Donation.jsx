@@ -22,7 +22,6 @@ const FoodDonationHistory = () => {
         }
 
         const response = await axios.get('${import.meta.env.VITE_BASE_URL}/api/v1/restaurants/donationHistory', {
-          headers: { Authorization: `Bearer ${accessToken}` },
           withCredentials: true,
         });
 
