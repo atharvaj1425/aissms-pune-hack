@@ -59,7 +59,8 @@ const FoodInventory = ({ closeModal, updateFoodItems }) => {
     try {
       console.log("Sending data to backend:", formData);
       
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/restaurants/addFoodItem`, formData);
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/restaurants/addFoodItem`, formData, {
+        withCredentials: true,});
       if (response.status === 200 || response.status === 201) {
         toast.success('Food item added successfully!');
       }
