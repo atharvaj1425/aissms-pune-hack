@@ -1,15 +1,100 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
+# Azure DevOps Pipeline for Full-Stack Project with Docker
 trigger:
-- main
-
+  - main
+  
 pool:
-  name: Default
-  vmImage: selfHostedImage
-
+  vmImage: 'ubuntu-latest'
+  
+variables:
+    # Define variables for Docker images and tags
+    frontendImageName: 'frontend-app'
+    backendImageName: 'backend-app'
+    dockerRegistry: 'your-docker-registry' # Replace with your Docker registry (e.g., Docker Hub or Azure Container Registry)
+    dockerRegistryServiceConnection: 'your-service-connection-name' # Replace with your Azure DevOps service connection name
+  
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+  # Step 1: Install dependencies for Backend
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '16.x'
+    displayName: 'Install Node.js for Backend'
+  
+  - script: |
+      cd Backend
+      npm install
+    displayName: 'Install Backend Dependencies'
+  
+  # Step 2: Install dependencies for Frontend
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '16.x'
+    displayName: 'Install Node.js for Frontend'
+  
+  - script: |
+      cd Frontend
+      npm install
+    displayName: 'Install Frontend Dependencies'
+  
+  # Step 3: Build Frontend
+  - script: |
+      cd Frontend
+      npm run build
+    displayName: 'Build Frontend'
+  
+  # Step 4: Build Backend
+  - script: |
+      cd Backend
+      npm run build
+    displayName: 'Build Backend'
+  
+  # Step 5: Build Docker Images
+  - task: Docker@2
+    displayName: 'Build Docker Images'
+    inputs:
+      containerRegistry: $(dockerRegistryServiceConnection)
+      repository: $(frontendImageName)
+      command: build
+      Dockerfile: Frontend/Dockerfile
+      tags: |
+        latest
+  
+  - task: Docker@2
+    displayName: 'Build Docker Images for Backend'
+    inputs:
+      containerRegistry: $(dockerRegistryServiceConnection)
+      repository: $(backendImageName)
+      command: build
+      Dockerfile: Backend/Dockerfile
+      tags: |
+        latest
+  
+  # Step 6: Push Docker Images
+  - task: Docker@2
+    displayName: 'Push Frontend Docker Image'
+    inputs:
+      containerRegistry: $(dockerRegistryServiceConnection)
+      repository: $(frontendImageName)
+      command: push
+      tags: |
+        latest
+  
+  - task: Docker@2
+    displayName: 'Push Backend Docker Image'
+    inputs:
+      containerRegistry: $(dockerRegistryServiceConnection)
+      repository: $(backendImageName)
+      command: push
+      tags: |
+        latest
+  
+  # Step 7: Deploy Backend
+  - script: |
+      echo "Deploying Backend..."
+      # Add deployment commands for your backend (e.g., Kubernetes, Azure App Service, etc.)
+    displayName: 'Deploy Backend'
+  
+  # Step 8: Deploy Frontend
+  - script: |
+      echo "Deploying Frontend..."
+      # Add deployment commands for your frontend (e.g., Vercel, Azure Static Web Apps, etc.)
+    displayName: 'Deploy Frontend'
