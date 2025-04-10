@@ -38,6 +38,11 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true, 
     },
+    aadhaarNumber: {
+        type: String,
+        required: true,
+        unique: true, 
+    },
     role: {
         type: String,
         enum: ['individual', 'restaurant', 'ngo', 'volunteer', 'catering/university mess'],
@@ -49,10 +54,6 @@ const userSchema = new mongoose.Schema({
         return ['restaurant', 'ngo', 'catering/university mess'].includes(this.role);
         }
     },
-   phoneNumber:{
-        type: String,
-        required: true,
-    }
 }, {
     timestamps: true
 }); 

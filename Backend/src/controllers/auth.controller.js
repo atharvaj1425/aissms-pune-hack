@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { uploadToCloudinary } from "../utils/cloudinary.js";
 import { sendOTP, verifyOTP } from "../utils/otpVerification.js";
-
+import Together from "together-ai";
 /**
  * Function to send OTP before registration
  */
@@ -25,44 +25,120 @@ export const sendOtp = async (req, res) => {
     }
   };
 
-const registerUser = async(req, res) => {
-    const { email, otp } = req.body;
+// const registerUser = async(req, res) => {
+//     const { email, otp } = req.body;
+//     if (!verifyOTP(email, otp)) {
+//         return res.status(400).json({ message: "Invalid or expired OTP" });
+//     }
+//     try {
+//         console.log("Registration request received:", {
+//             body: req.body,
+//             file: req.file
+//         });
+
+//         const { 
+//             email, 
+//             name, 
+//             password, 
+//             address, 
+//             pincode, 
+//             role, 
+//             phoneNumber, 
+//             latitude, 
+//             longitude 
+//         } = req.body;
+
+//         let verificationDocUrl;
+        
+//         // Handle file upload for specific roles
+//         if (['restaurant', 'ngo', 'catering/university mess'].includes(role) && req.file) {
+//             const cloudinaryResponse = await uploadToCloudinary(req.file.path);
+//             console.log("Cloudinary upload response:", cloudinaryResponse);
+            
+//             if (cloudinaryResponse && cloudinaryResponse.url) {
+//                 verificationDocUrl = cloudinaryResponse.url;
+//                 console.log("Document uploaded successfully:", verificationDocUrl);
+//             } else {
+//                 throw new Error("Failed to upload verification document");
+//             }
+//         }
+
+//         const newUser = new User({
+//             name,
+//             email,
+//             password,
+//             address,
+//             pincode,
+//             role,
+//             phoneNumber,
+//             location: {
+//                 latitude,
+//                 longitude
+//             },
+//             verificationDoc: verificationDocUrl
+//         });
+
+//         await newUser.save();
+
+//         res.status(201).json({
+//             success: true,
+//             message: "User registered successfully",
+//             data: {
+//                 name: newUser.name,
+//                 email: newUser.email,
+//                 role: newUser.role,
+//                 verificationDoc: verificationDocUrl
+//             }
+//         });
+
+//     } catch (error) {
+//         console.error("Registration error:", error);
+//         res.status(500).json({
+//             success: false,
+//             message: error.message || "Registration failed"
+//         });
+//     }
+// };
+
+const registerUser = async (req, res) => {
+    const { email, otp, name, password, address, pincode, role, phoneNumber, latitude, longitude, aadhaarNumber } = req.body;
+
+    // Verify OTP
     if (!verifyOTP(email, otp)) {
         return res.status(400).json({ message: "Invalid or expired OTP" });
     }
-    try {
-        console.log("Registration request received:", {
-            body: req.body,
-            file: req.file
-        });
 
-        const { 
-            email, 
-            name, 
-            password, 
-            address, 
-            pincode, 
-            role, 
-            phoneNumber, 
-            latitude, 
-            longitude 
-        } = req.body;
+    try {
+        console.log("Registration request received:", { body: req.body, file: req.file });
 
         let verificationDocUrl;
-        
-        // Handle file upload for specific roles
-        if (['restaurant', 'ngo', 'catering/university mess'].includes(role) && req.file) {
+
+        // Handle Aadhaar card upload and verification
+        if (req.file) {
             const cloudinaryResponse = await uploadToCloudinary(req.file.path);
-            console.log("Cloudinary upload response:", cloudinaryResponse);
-            
             if (cloudinaryResponse && cloudinaryResponse.url) {
                 verificationDocUrl = cloudinaryResponse.url;
-                console.log("Document uploaded successfully:", verificationDocUrl);
+
+                // Extract text from Aadhaar card using Llama Vision API
+                const extractedData = await extractTextFromAadhaar(verificationDocUrl);
+                console.log(extractedData)
+                // Match extracted data with input fields
+                if (
+                    extractedData.name.toLowerCase() !== name.toLowerCase() ||
+                    // extractedData.phoneNumber !== phoneNumber ||
+                    extractedData.aadhaarNumber !== aadhaarNumber
+                ) {
+                    return res.status(400).json({
+                        success: false,
+                        message: "Aadhaar card details do not match the provided information.",
+                    });
+                }
             } else {
-                throw new Error("Failed to upload verification document");
+                throw new Error("Failed to upload Aadhaar card document");
             }
         }
 
+        // Create new user
         const newUser = new User({
             name,
             email,
@@ -71,11 +147,9 @@ const registerUser = async(req, res) => {
             pincode,
             role,
             phoneNumber,
-            location: {
-                latitude,
-                longitude
-            },
-            verificationDoc: verificationDocUrl
+            location: { latitude, longitude },
+            aadhaarNumber,
+            verificationDoc: verificationDocUrl,
         });
 
         await newUser.save();
@@ -87,16 +161,52 @@ const registerUser = async(req, res) => {
                 name: newUser.name,
                 email: newUser.email,
                 role: newUser.role,
-                verificationDoc: verificationDocUrl
-            }
+                verificationDoc: verificationDocUrl,
+            },
         });
-
     } catch (error) {
         console.error("Registration error:", error);
         res.status(500).json({
             success: false,
-            message: error.message || "Registration failed"
+            message: error.message || "Registration failed",
         });
+    }
+};
+
+// Helper function to extract text from Aadhaar card using Llama Vision API
+const extractTextFromAadhaar = async (imageUrl) => {
+    try {
+        const response = await together.chat.completions.create({
+            model: "meta-llama/Llama-Vision-Free",
+            temperature: 0.1,
+            messages: [
+                {
+                    role: "user",
+                    content: [
+                        {
+                            type: "text",
+                            text: "Extract Aadhaar card details: Name, Aadhaar Number, Phone Number.",
+                        },
+                        {
+                            type: "image_url",
+                            image_url: { url: imageUrl },
+                        },
+                    ],
+                },
+            ],
+        });
+
+        const extractedText = response.choices[0].message.content;
+
+        // Extract Aadhaar details using regex
+        const aadhaarNumber = extractedText.match(/\d{4}\s\d{4}\s\d{4}/)?.[0] || null;
+        const name = extractedText.match(/Name:\s*([A-Za-z ]+)/)?.[1] || null;
+        const phoneNumber = extractedText.match(/Mobile:\s*(\d{10})/)?.[1] || null;
+
+        return { aadhaarNumber, name, phoneNumber };
+    } catch (error) {
+        console.error("Error extracting Aadhaar details:", error);
+        throw new Error("Failed to extract Aadhaar details");
     }
 };
 

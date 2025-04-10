@@ -218,6 +218,7 @@ const verifyOtpAndRegister = async () => {
         });
 
         if (response.status === 201) {
+            toast.success("Aadhar Card Details Verified Successfully!");
             toast.success("Registration Successful!");
             setShowOtpModal(false); // Close OTP modal
 
@@ -232,6 +233,7 @@ const verifyOtpAndRegister = async () => {
                 pincode: "",
                 role: "individual",
                 phoneNumber: "",
+                aadharNumber: "",
                 verificationDoc: null,
                 agreeToTerms: false,
             });
@@ -315,6 +317,18 @@ const verifyOtpAndRegister = async () => {
                                     required
                                     className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                                     placeholder="Enter your phone number"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-gray-700 font-medium mb-2">Aadhaar Number:</label>
+                                <input
+                                    type="text"
+                                    name="aadhaarNumber"
+                                    value={formData.aadhaarNumber}
+                                    onChange={handleInputChange}
+                                    required
+                                    className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                                    placeholder="Enter your Aadhaar number"
                                 />
                             </div>
                             <div>
