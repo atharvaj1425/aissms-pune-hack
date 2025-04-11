@@ -9,7 +9,7 @@ const RestaurantLeaderboardModal = ({ onClose }) => {
     useEffect(() => {
         const fetchLeaderboard = async () => {
             try {
-                const response = await axios.get('${import.meta.env.VITE_BASE_URL}/api/v1/restaurants/restaurant-ranking', {
+                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/restaurants/restaurant-ranking`, {
                     withCredentials: true,
                 });
                 setLeaderboardData(response.data.data);
