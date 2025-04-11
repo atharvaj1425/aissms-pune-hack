@@ -80,7 +80,7 @@ const GetSingleMeal = () => {
   useEffect(() => {
     const fetchMeals = async () => {
       try {
-        const response = await axios.get('${import.meta.env.VITE_BASE_URL}/api/v1/users/getMeal');
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/users/getMeal`, {withCredentials: true});
         if (response.data && response.data.data) {
           setMeals(response.data.data);
           console.log(response.data.data);

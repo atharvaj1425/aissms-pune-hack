@@ -54,6 +54,10 @@ const userSchema = new mongoose.Schema({
         return ['restaurant', 'ngo', 'catering/university mess'].includes(this.role);
         }
     },
+    redeem_points:{
+        type: Number,
+        default: 0,
+    }
 }, {
     timestamps: true
 }); 

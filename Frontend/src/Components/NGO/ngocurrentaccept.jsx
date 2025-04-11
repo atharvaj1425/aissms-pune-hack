@@ -61,7 +61,8 @@ const NgoCurrentAcceptPage = () => {
         status: newStatus,
         otp: newStatus === 'Out for Delivery' ? otp : undefined,
         role: 'ngo'
-      });
+      },
+      {withCredentials: true});
       setDonation({ ...donation, status: newStatus });
       if (newStatus === 'Arrival for Pick Up') {
         alert(`OTP sent: ${response.data.otp}`);

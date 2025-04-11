@@ -236,6 +236,7 @@ const loginUser = async(req, res) => {
                 role: user.role,
                 email: user.email,
                 name: user.name,
+                redeem_points: user.redeem_points,
             }, 
             process.env.ACCESS_TOKEN_SECRET,
             { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
@@ -255,6 +256,7 @@ const loginUser = async(req, res) => {
                     email: user.email,
                     role: user.role,
                     name: user.name,
+                    redeem_points: user.redeem_points,
                 },
             });
     } catch (error) {

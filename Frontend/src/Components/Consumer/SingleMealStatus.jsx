@@ -34,7 +34,7 @@ const SingleMealStatus = () => {
         status: newStatus,
         otp: newStatus === 'Out for Delivery' ? otp : undefined,
         role: 'individual'
-      });
+      }, {withCredentials: true});
       setMeals(meals.map(meal => meal._id === mealId ? { ...meal, status: newStatus } : meal));
       if (newStatus === 'Arrival for Pick Up') {
         alert(`OTP sent: ${response.data.otp}`);

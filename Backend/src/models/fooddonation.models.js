@@ -59,4 +59,38 @@ const foodDonationSchema = new mongoose.Schema({
     timestamps: true
 })
 
+foodDonationSchema.pre("save", async function (next) {
+    if (this.isModified("status") && this.status === "Delivered") {
+        try {
+            // Add points to the donor
+            const donor = await User.findById(this.restaurantUser);
+            if (donor) {
+                donor.redeem_points = (donor.redeem_points || 0) + 5;
+                await donor.save();
+            }
+
+            // Add points to the volunteer if applicable
+            if (this.acceptedById) {
+                const volunteer = await User.findById(this.acceptedById);
+                if (volunteer && volunteer.role === "volunteer") {
+                    volunteer.redeem_points = (volunteer.redeem_points || 0) + 5;
+                    await volunteer.save();
+                }
+            }
+
+            if (this.acceptedById) {
+                const ngo = await User.findById(this.acceptedById);
+                if (ngo && ngo.role === "ngo") {
+                    ngo.redeem_points = (ngo.redeem_points || 0) + 5;
+                    await ngo.save();
+                }
+            }
+        } catch (error) {
+            console.error("Error adding points:", error);
+            next(error);
+        }
+    }
+    next();
+});
+
 export const FoodDonation = mongoose.model("FoodDonation", foodDonationSchema)
