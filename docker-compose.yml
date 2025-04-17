@@ -10,7 +10,7 @@ services:
       - "4000:4000"
     environment:
       - PORT=4000
-      - MONGO_URL=mongodb://mongo:27017/mydatabase  # Replace 'mydatabase' with your actual database name
+      - MONGO_URL=mongodb://mongo:27017/rbac  # Replace 'mydatabase' with your actual database name
     depends_on:
       - mongo
     volumes:
