@@ -100,6 +100,7 @@ export const sendOtp = async (req, res) => {
 //     }
 // };
 
+const together = new Together(); // Initialize Together AI client
 const registerUser = async (req, res) => {
     const { email, otp, name, password, address, pincode, role, phoneNumber, latitude, longitude, aadhaarNumber } = req.body;
 
