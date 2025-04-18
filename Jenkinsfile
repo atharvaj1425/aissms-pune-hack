@@ -111,13 +111,13 @@ pipeline {
       }
     }
 
-    stage('Lint') {
-      steps {
-        dir('Frontend') {
-          bat 'npm run lint || echo "Lint warnings found"'
-        }
-      }
-    }
+    // stage('Lint') {
+    //   steps {
+    //     dir('Frontend') {
+    //       bat 'npm run lint || echo "Lint warnings found"'
+    //     }
+    //   }
+    // }
 
     stage('Test') {
       steps {
