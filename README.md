@@ -4,61 +4,64 @@
 
 Food waste is a significant global challenge, while millions continue to struggle with hunger. Our digital platform bridges the gap between surplus food sources—such as restaurants, bakeries, caterers, and canteens—and NGOs, shelters, and volunteers who work to distribute food to those in need. By leveraging real-time tracking, optimized routing, and AI-driven inventory management, our platform ensures that surplus food is efficiently redistributed before spoilage occurs.
 
-[Nourish AI](https://aissms-pune-hack.vercel.app/)
+🌐 [Live Demo: Nourish AI](https://aissms-pune-hack.vercel.app/)
+
+---
 
 ## Key Features
 
-### Role-Based Access & Registration
+### 🎯 Role-Based Access & Registration
 - **Donors:**  
-  - Restaurants, canteens, caterers, and bakeries can sign up to upload details about surplus food (e.g., expiry dates, pickup schedules).
+  Upload details about surplus food (expiry, pickup time).
 - **Recipients:**  
-  - NGOs, shelters, and volunteers can register to browse available donations and claim food based on current need.
+  NGOs, shelters, and volunteers claim food based on need.
 - **Communication:**  
-  - Integrated notifications and scheduling tools facilitate seamless communication between donors and recipients.
+  Real-time scheduling and notifications between users.
 
-### Real-Time Food Redistribution & Optimization
+### 🚚 Real-Time Food Redistribution & Optimization
 - **Geolocation & Route Optimization:**  
-  - Utilizes the Google Maps API to calculate optimal pickup routes for fast and efficient food collection.
+  Google Maps API integration for efficient collection.
 - **Smart Alerts:**  
-  - Automated notifications warn donors when food is nearing its expiry date, prompting timely action.
+  Notify donors when food is nearing expiry.
 - **Live Tracking:**  
-  - Both donors and recipients can monitor donation statuses in real time.
+  Track donation status in real-time.
 
-### AI-Powered Food Management & Inventory Tracking
-<!-- - **OCR-Based Inventory Management:**  
-  - Donors can quickly upload food details using OCR technology. -->
+### 🤖 AI-Powered Food Management
 - **Predictive Analytics:**  
-  - AI-driven models analyze historical donation trends to suggest optimal food quantities, minimizing waste.
+  Optimize donations using past trends.
 - **Smart Recipe Chatbot:**  
-  - Provides creative recipe suggestions to help users make the most of available food.
+  Suggest recipes based on available ingredients.
 
-### Seamless Pickup & Distribution Process
-- **Efficient Claiming:**  
-  - NGOs and volunteers easily claim food donations through the platform.
-- **Optimized Pickup Routes:**  
-  - The system provides optimized routing options to ensure efficient collection and distribution.
-- **Transparent Delivery Coordination:**  
-  - Track deliveries and donation status for a seamless redistribution process.
+### 🔁 Seamless Pickup & Distribution
+- Efficient claiming and route assignment.
+- Transparent delivery tracking and status updates.
 
-## Technology Stack
-- **Frontend:** React.js
+---
+
+## 🧑‍💻 Technology Stack
+
+- **Frontend:** React.js, Vite
 - **Backend:** Node.js, Express.js
 - **Database:** MongoDB
-- **Additional Integrations:**
-  - **Google Maps API:** For geolocation and route optimization.
-  - **Twilio:** For SMS notifications.
-  - **OCR Tools:** For fast inventory uploads.
-  - **AI/ML Models:** For predictive analytics and smart recommendations.
+- **APIs & Integrations:**
+  - Google Maps API (geolocation & routing)
+  - Twilio (SMS alerts)
+  - AI/ML Models (prediction + chatbot)
+  - OCR tools (for optional inventory digitization)
 
-## Installation & Setup
+---
+
+## 🛠️ Installation & Setup
 
 ### Prerequisites
-- [Node.js](https://nodejs.org/) (Latest LTS recommended)
-- [MongoDB](https://www.mongodb.com/) (Local instance or cloud service)
-- [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) (Optional, for containerization)
+- [Node.js](https://nodejs.org/) (LTS)
+- [MongoDB](https://www.mongodb.com/)
+- [Docker](https://www.docker.com/) (optional)
 - [Git](https://git-scm.com/)
 
-### Running Locally
+---
+
+### 🚀 Running Locally
 
 #### 1. Clone the Repository
 ```bash
@@ -67,52 +70,49 @@ cd your-repo-name
 ```
 
 #### 2. Backend Setup
-- Navigate to the `Backend` directory:
-  ```bash
-  cd Backend
-  ```
-- Install dependencies:
-  ```bash
-  npm install
-  ```
-- Configure your environment by creating a `.env` file:
-  ```env
-  PORT=4000
-  MONGO_URL=mongodb://localhost:27017/mydatabase
-  ```
-- Start the backend server:
-  ```bash
-  npm start
-  ```
+```bash
+cd Backend
+npm install
+```
+
+Create `.env` file:
+```env
+PORT=4000
+MONGO_URL=mongodb://localhost:27017/mydatabase
+```
+
+Start the backend:
+```bash
+npm start
+```
 
 #### 3. Frontend Setup
-- Open a new terminal and navigate to the `Frontend` directory:
-  ```bash
-  cd ../Frontend
-  ```
-- Install dependencies:
-  ```bash
-  npm install
-  ```
-- Configure your environment by creating a `.env` file:
-  ```env
-  VITE_BASE_URL=http://localhost:4000/api/v1
-  ```
-- Start the development server:
-  ```bash
-  npm run dev
-  ```
-- For production build and preview:
-  ```bash
-  npm run build
-  npm run preview -- --port 5173
-  ```
+```bash
+cd ../Frontend
+npm install
+```
 
-### Running with Docker
+Create `.env` file:
+```env
+VITE_BASE_URL=http://localhost:4000/api/v1
+```
 
-A Docker Compose setup is provided to containerize the application components (Backend, Frontend, and MongoDB).
+Run dev server:
+```bash
+npm run dev
+```
 
-#### Docker Compose File (`docker-compose.yml`)
+Production build:
+```bash
+npm run build
+npm run preview -- --port 5173
+```
+
+---
+
+## 🐳 Docker Deployment
+
+### docker-compose.yml
 ```yaml
 version: '3.8'
 
@@ -126,11 +126,11 @@ services:
       - "4000:4000"
     environment:
       - PORT=4000
-      - MONGO_URL=mongodb://mongo:27017/mydatabase  # Replace 'mydatabase' with your database name
+      - MONGO_URL=mongodb://mongo:27017/mydatabase
     depends_on:
       - mongo
     volumes:
-      - ./Backend:/src  # Optional: mount for development
+      - ./Backend:/src
 
   mongo:
     image: mongo:latest
@@ -146,50 +146,103 @@ services:
       dockerfile: Dockerfile
     container_name: frontend
     ports:
-      - "5173:5173"  # Adjust as needed. Ensure your container listens on 5173.
+      - "5173:5173"
     volumes:
-      - ./Frontend:/src  # Optional: mount for development
+      - ./Frontend:/src
 
 volumes:
   mongo-data:
 ```
 
-> **Note:**  
-> If you use a volume mount for the frontend during development, it may override your built files. For production, consider removing the volume mount from the frontend service.
-
-#### To Build & Run
-From the repository root (where `docker-compose.yml` is located), run:
+Start with:
 ```bash
 docker-compose up --build
 ```
-Access your services at:
-- **Backend:** [http://localhost:4000](http://localhost:4000)
-- **Frontend:** [http://localhost:5173](http://localhost:5173)
-- **MongoDB:** Accessible on port 27017 for backend connections.
 
-## Impact & Future Enhancements
+Access:
+- **Backend:** http://localhost:4000  
+- **Frontend:** http://localhost:5173  
+
+---
+
+## 🔁 CI/CT/CD Pipeline
+
+```mermaid
+graph TD
+A[GitHub Push] --> B[Jenkins Trigger]
+B --> C[Install Dependencies]
+C --> D[Run Tests]
+D --> E[Frontend Build]
+E --> F[Docker Build & Push]
+F --> G[Docker Compose Up]
+G --> H[Containers Running]
+```
+
+---
+
+## ✅ Sample Test Output
+
+### Backend
+```bash
+✓ should return 200 for the root endpoint
+✓ should fetch top individual donors
+✓ should fetch top restaurant donors
+✓ should return 404 for an unknown route
+```
+
+### Frontend
+```bash
+✓ HomePage.test.jsx
+✓ Renders carousel with correct titles
+✓ Fetches leaderboard data on mount
+```
+
+---
+
+## 🧾 Docker Logs
+```bash
+MongoDB connected: mongo
+Server running at http://localhost:4000
+Twilio Auth Token: Loaded
+Frontend served at http://localhost:5173
+```
+
+---
+
+## 👥 Team Members
+
+| Name | Role | Responsibilities |
+|------|------|------------------|
+| Atharva Jamdade | Full Stack Lead | Backend logic, MongoDB, Jenkins CI/CD |
+| [Your Teammate] | Frontend Developer | UI/UX, React, Vite |
+| [Your Teammate] | DevOps Engineer | Docker, Jenkins, Deployment |
+| [Your Teammate] | AI/ML Specialist | Predictive Models, Recipe Chatbot |
+
+---
+
+## 🚀 Impact & Future Scope
 
 - **Social Impact:**  
-  Reduces food wastage while enhancing food security for communities in need.
-- **Economic Potential:**  
-  Potential for subscription-based analytics and AI insights tailored for businesses.
-- **Scalability:**  
-  Designed with cloud-based infrastructure in mind, the platform can expand to multiple cities.
-- **Future Enhancements:**  
-  Further integration with advanced AI models, enhanced API integrations, and additional user experience improvements.
+  Supports undernourished populations while reducing food waste.
 
-## Contributing
+- **Business Impact:**  
+  Businesses get insights to optimize food operations.
 
-Contributions are welcome! To contribute:
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Commit your changes and open a pull request.
-4. Follow the coding standards and include tests for new features.
+- **Future Additions:**
+  - Mobile app with push notifications
+  - Volunteer leaderboard and incentives
+  - Deep learning food recognition from images
+  - City-level expansion via cloud deployments
 
-## License
+---
 
-This project is licensed under the [MIT License](LICENSE).
+## 📄 License
 
-## Contact
+MIT License
 
-For questions or further information, please contact [jamdadeatharva14@gmail.com](mailto:your-jamdadeatharva14@gmail.coms).
+---
+
+## 📬 Contact
+
+For queries or collaborations, reach out:  
+📧 [jamdadeatharva14@gmail.com](mailto:jamdadeatharva14@gmail.com)

@@ -28,7 +28,7 @@ services:
 
   frontend:
     environment:
-    - VITE_BASE_URL=http://backend:4000
+    - VITE_BASE_URL=http://localhost:4000
     build:
       context: ./Frontend
       dockerfile: Dockerfile
