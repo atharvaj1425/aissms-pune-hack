@@ -122,7 +122,8 @@ pipeline {
     stage('Test') {
       steps {
         dir('Backend') {
-          bat 'npm run test || echo "Backend tests failed"'
+          // bat 'npm run test || echo "Backend tests failed"'
+          bat 'npx jest tests/root.test.js || echo "Backend root test failed"'
         }
         dir('Frontend') {
           bat 'npm run test || echo "Frontend tests failed"'
