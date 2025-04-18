@@ -11,6 +11,9 @@ RUN npm install
 # Copy the rest of the source code
 COPY . .
 
+# Copy the .env file into the container
+COPY .env .env
+
 # Build the application (this will create a build or dist folder; adjust if needed)
 RUN npm run build
 
