@@ -166,10 +166,10 @@ pipeline {
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub-login')
 
-    // ✅ Backend .env secrets from Jenkins credentials
+    // Backend .env secrets from Jenkins credentials
     PORT = credentials('PORT')
     MONGODB_URI = credentials('MONGODB_URI')
-    CORS_ORIGIN = credentials('CORS_ORIGIN') // Yes, you should add this too
+    CORS_ORIGIN = credentials('CORS_ORIGIN')
     ACCESS_TOKEN_SECRET = credentials('ACCESS_TOKEN_SECRET')
     ACCESS_TOKEN_EXPIRY = credentials('ACCESS_TOKEN_EXPIRY')
     CLOUDINARY_CLOUD_NAME = credentials('CLOUDINARY_CLOUD_NAME')
@@ -180,7 +180,7 @@ pipeline {
     TWILIO_PHONE_NUMBER = credentials('TWILIO_PHONE_NUMBER')
     TOGETHER_API_KEY = credentials('TOGETHER_API_KEY')
 
-    // ✅ Frontend config
+    // Frontend config
     VITE_BASE_URL = credentials('VITE_BASE_URL')
   }
 
@@ -188,26 +188,24 @@ pipeline {
     stage('Install Dependencies') {
       steps {
         dir('Backend') {
-          // 🔐 Write .env securely from Jenkins variables
           writeFile file: '.env', text: """
-            PORT=${PORT}
-            MONGODB_URI=${MONGODB_URI}
-            CORS_ORIGIN=${CORS_ORIGIN}
-            ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
-            ACCESS_TOKEN_EXPIRY=${ACCESS_TOKEN_EXPIRY}
-            CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
-            CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
-            CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
-            TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
-            TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
-            TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER}
-            TOGETHER_API_KEY=${TOGETHER_API_KEY}
-          """
+            PORT=$PORT
+            MONGODB_URI=$MONGODB_URI
+            CORS_ORIGIN=$CORS_ORIGIN
+            ACCESS_TOKEN_SECRET=$ACCESS_TOKEN_SECRET
+            ACCESS_TOKEN_EXPIRY=$ACCESS_TOKEN_EXPIRY
+            CLOUDINARY_CLOUD_NAME=$CLOUDINARY_CLOUD_NAME
+            CLOUDINARY_API_KEY=$CLOUDINARY_API_KEY
+            CLOUDINARY_API_SECRET=$CLOUDINARY_API_SECRET
+            TWILIO_ACCOUNT_SID=$TWILIO_ACCOUNT_SID
+            TWILIO_AUTH_TOKEN=$TWILIO_AUTH_TOKEN
+            TWILIO_PHONE_NUMBER=$TWILIO_PHONE_NUMBER
+            TOGETHER_API_KEY=$TOGETHER_API_KEY
+          """.stripIndent()
           bat 'npm install'
         }
         dir('Frontend') {
-          // 💻 Inject VITE env (safe to expose)
-          writeFile file: '.env', text: "VITE_BASE_URL=${VITE_BASE_URL}"
+          writeFile file: '.env', text: "VITE_BASE_URL=$VITE_BASE_URL"
           bat 'npm install'
         }
       }
@@ -241,6 +239,12 @@ pipeline {
         docker push %DOCKERHUB_CREDENTIALS_USR%/aissms-backend
         docker push %DOCKERHUB_CREDENTIALS_USR%/aissms-frontend
         """
+      }
+    }
+
+    stage('Docker Compose Up') {
+      steps {
+        bat 'docker-compose -f docker-compose.yml up -d --build'
       }
     }
   }
