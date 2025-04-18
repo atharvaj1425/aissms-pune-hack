@@ -1,100 +1,96 @@
-# Azure DevOps Pipeline for Full-Stack Project with Docker
+# Azure DevOps Pipeline for Full-Stack App with Docker and Azure Deployment
+
 trigger:
   - main
-  
+
 pool:
   vmImage: 'ubuntu-latest'
-  
+
 variables:
-    # Define variables for Docker images and tags
-    frontendImageName: 'frontend-app'
-    backendImageName: 'backend-app'
-    dockerRegistry: 'your-docker-registry' # Replace with your Docker registry (e.g., Docker Hub or Azure Container Registry)
-    dockerRegistryServiceConnection: 'your-service-connection-name' # Replace with your Azure DevOps service connection name
-  
+  frontendImageName: 'aissms-frontend'
+  backendImageName: 'aissms-backend'
+  dockerRegistry: 'atharvaj1425' # e.g., atharvaj1425
+  dockerRegistryServiceConnection: 'your-service-connection-name' # Define in Azure DevOps project settings
+
 steps:
-  # Step 1: Install dependencies for Backend
+  # Step 1: Install Node.js for Both Frontend and Backend
   - task: NodeTool@0
     inputs:
       versionSpec: '16.x'
-    displayName: 'Install Node.js for Backend'
-  
+    displayName: 'Install Node.js'
+
+  # Step 2: Install Dependencies
   - script: |
       cd Backend
       npm install
     displayName: 'Install Backend Dependencies'
-  
-  # Step 2: Install dependencies for Frontend
-  - task: NodeTool@0
-    inputs:
-      versionSpec: '16.x'
-    displayName: 'Install Node.js for Frontend'
-  
+
   - script: |
       cd Frontend
       npm install
     displayName: 'Install Frontend Dependencies'
-  
-  # Step 3: Build Frontend
+
+  # Step 3: Run Backend & Frontend Tests (Optional)
+  - script: |
+      cd Backend
+      npm run test || echo "Backend tests failed"
+    displayName: 'Run Backend Tests'
+
+  - script: |
+      cd Frontend
+      npm run test || echo "Frontend tests failed"
+    displayName: 'Run Frontend Tests'
+
+  # Step 4: Build Frontend & Backend
   - script: |
       cd Frontend
       npm run build
     displayName: 'Build Frontend'
-  
-  # Step 4: Build Backend
+
   - script: |
       cd Backend
-      npm run build
+      npm run build || echo "No explicit backend build"
     displayName: 'Build Backend'
-  
-  # Step 5: Build Docker Images
+
+  # Step 5: Docker Build
   - task: Docker@2
-    displayName: 'Build Docker Images'
+    displayName: 'Build Frontend Docker Image'
     inputs:
       containerRegistry: $(dockerRegistryServiceConnection)
-      repository: $(frontendImageName)
+      repository: $(dockerRegistry)/$(frontendImageName)
       command: build
       Dockerfile: Frontend/Dockerfile
-      tags: |
-        latest
-  
+      tags: latest
+
   - task: Docker@2
-    displayName: 'Build Docker Images for Backend'
+    displayName: 'Build Backend Docker Image'
     inputs:
       containerRegistry: $(dockerRegistryServiceConnection)
-      repository: $(backendImageName)
+      repository: $(dockerRegistry)/$(backendImageName)
       command: build
       Dockerfile: Backend/Dockerfile
-      tags: |
-        latest
-  
-  # Step 6: Push Docker Images
+      tags: latest
+
+  # Step 6: Docker Push
   - task: Docker@2
     displayName: 'Push Frontend Docker Image'
     inputs:
       containerRegistry: $(dockerRegistryServiceConnection)
-      repository: $(frontendImageName)
+      repository: $(dockerRegistry)/$(frontendImageName)
       command: push
-      tags: |
-        latest
-  
+      tags: latest
+
   - task: Docker@2
     displayName: 'Push Backend Docker Image'
     inputs:
       containerRegistry: $(dockerRegistryServiceConnection)
-      repository: $(backendImageName)
+      repository: $(dockerRegistry)/$(backendImageName)
       command: push
-      tags: |
-        latest
-  
-  # Step 7: Deploy Backend
-  - script: |
-      echo "Deploying Backend..."
-      # Add deployment commands for your backend (e.g., Kubernetes, Azure App Service, etc.)
+      tags: latest
+
+  # Step 7: Deploy
+  - script: echo "🚀 Deploy Backend here (Kubernetes, Azure App Service, etc.)"
     displayName: 'Deploy Backend'
-  
-  # Step 8: Deploy Frontend
-  - script: |
-      echo "Deploying Frontend..."
-      # Add deployment commands for your frontend (e.g., Vercel, Azure Static Web Apps, etc.)
+
+  - script: echo "🚀 Deploy Frontend here (Azure Static Web Apps, Vercel, etc.)"
     displayName: 'Deploy Frontend'

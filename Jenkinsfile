@@ -92,18 +92,86 @@
 // }
 
 
+// pipeline {
+//   agent any
+
+//   environment {
+//     DOCKERHUB_CREDENTIALS = credentials('dockerhub-login')
+
+//     // ✅ Inject .env secrets from Jenkins credentials
+//     PORT = credentials('PORT')
+//     MONGODB_URI = credentials('MONGODB_URI')
+//     // CORS_ORIGIN = credentials('CORS_ORIGIN')
+//     // ACCESS_TOKEN_SECRET = credentials('ACCESS_TOKEN_SECRET')
+//     // ACCESS_TOKEN_EXPIRY = credentials('ACCESS_TOKEN_EXPIRY')
+//     CLOUDINARY_CLOUD_NAME = credentials('CLOUDINARY_CLOUD_NAME')
+//     CLOUDINARY_API_KEY = credentials('CLOUDINARY_API_KEY')
+//     CLOUDINARY_API_SECRET = credentials('CLOUDINARY_API_SECRET')
+//     TWILIO_ACCOUNT_SID = credentials('TWILIO_ACCOUNT_SID')
+//     TWILIO_AUTH_TOKEN = credentials('TWILIO_AUTH_TOKEN')
+//     TWILIO_PHONE_NUMBER = credentials('TWILIO_PHONE_NUMBER')
+//     TOGETHER_API_KEY = credentials('TOGETHER_API_KEY')
+//   }
+
+//   stages {
+//     stage('Install Dependencies') {
+//       steps {
+//         dir('Backend') {
+//           bat 'npm install'
+//         }
+//         dir('Frontend') {
+//           bat 'npm install'
+//         }
+//       }
+//     }
+
+//     stage('Test') {
+//       steps {
+//         dir('Backend') {
+//           bat 'npm run test || echo "Backend tests failed"'
+//         }
+//         dir('Frontend') {
+//           bat 'npm run test || echo "Frontend tests failed"'
+//         }
+//       }
+//     }
+
+//     stage('Build') {
+//       steps {
+//         dir('Frontend') {
+//           bat 'npm run build || echo "No frontend build step"'
+//         }
+//       }
+//     }
+
+//     stage('Docker Build & Push') {
+//       steps {
+//         bat """
+//         echo %DOCKERHUB_CREDENTIALS_PSW% | docker login -u %DOCKERHUB_CREDENTIALS_USR% --password-stdin
+//         docker build -t %DOCKERHUB_CREDENTIALS_USR%/aissms-backend ./Backend
+//         docker build -t %DOCKERHUB_CREDENTIALS_USR%/aissms-frontend ./Frontend
+//         docker push %DOCKERHUB_CREDENTIALS_USR%/aissms-backend
+//         docker push %DOCKERHUB_CREDENTIALS_USR%/aissms-frontend
+//         """
+//       }
+//     }
+//   }
+// }
+
+
+
 pipeline {
   agent any
 
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub-login')
 
-    // ✅ Inject .env secrets from Jenkins credentials
+    // ✅ Backend .env secrets from Jenkins credentials
     PORT = credentials('PORT')
     MONGODB_URI = credentials('MONGODB_URI')
-    // CORS_ORIGIN = credentials('CORS_ORIGIN')
-    // ACCESS_TOKEN_SECRET = credentials('ACCESS_TOKEN_SECRET')
-    // ACCESS_TOKEN_EXPIRY = credentials('ACCESS_TOKEN_EXPIRY')
+    CORS_ORIGIN = credentials('CORS_ORIGIN') // Yes, you should add this too
+    ACCESS_TOKEN_SECRET = credentials('ACCESS_TOKEN_SECRET')
+    ACCESS_TOKEN_EXPIRY = credentials('ACCESS_TOKEN_EXPIRY')
     CLOUDINARY_CLOUD_NAME = credentials('CLOUDINARY_CLOUD_NAME')
     CLOUDINARY_API_KEY = credentials('CLOUDINARY_API_KEY')
     CLOUDINARY_API_SECRET = credentials('CLOUDINARY_API_SECRET')
@@ -111,15 +179,35 @@ pipeline {
     TWILIO_AUTH_TOKEN = credentials('TWILIO_AUTH_TOKEN')
     TWILIO_PHONE_NUMBER = credentials('TWILIO_PHONE_NUMBER')
     TOGETHER_API_KEY = credentials('TOGETHER_API_KEY')
+
+    // ✅ Frontend config
+    VITE_BASE_URL = credentials('VITE_BASE_URL')
   }
 
   stages {
     stage('Install Dependencies') {
       steps {
         dir('Backend') {
+          // 🔐 Write .env securely from Jenkins variables
+          writeFile file: '.env', text: """
+            PORT=${PORT}
+            MONGODB_URI=${MONGODB_URI}
+            CORS_ORIGIN=${CORS_ORIGIN}
+            ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
+            ACCESS_TOKEN_EXPIRY=${ACCESS_TOKEN_EXPIRY}
+            CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+            CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+            CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+            TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+            TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+            TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER}
+            TOGETHER_API_KEY=${TOGETHER_API_KEY}
+          """
           bat 'npm install'
         }
         dir('Frontend') {
+          // 💻 Inject VITE env (safe to expose)
+          writeFile file: '.env', text: "VITE_BASE_URL=${VITE_BASE_URL}"
           bat 'npm install'
         }
       }

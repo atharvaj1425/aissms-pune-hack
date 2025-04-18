@@ -8,8 +8,8 @@ WORKDIR /src
 COPY package*.json ./
 RUN npm install
 
-# Copy the rest of the backend source code
-COPY . .
+# # Copy the rest of the backend source code
+# COPY . .
 
 # Copy the .env file into the container
 COPY .env .env
