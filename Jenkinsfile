@@ -101,9 +101,9 @@ pipeline {
     // ✅ Inject .env secrets from Jenkins credentials
     PORT = credentials('PORT')
     MONGODB_URI = credentials('MONGODB_URI')
-    CORS_ORIGIN = credentials('CORS_ORIGIN')
-    ACCESS_TOKEN_SECRET = credentials('ACCESS_TOKEN_SECRET')
-    ACCESS_TOKEN_EXPIRY = credentials('ACCESS_TOKEN_EXPIRY')
+    // CORS_ORIGIN = credentials('CORS_ORIGIN')
+    // ACCESS_TOKEN_SECRET = credentials('ACCESS_TOKEN_SECRET')
+    // ACCESS_TOKEN_EXPIRY = credentials('ACCESS_TOKEN_EXPIRY')
     CLOUDINARY_CLOUD_NAME = credentials('CLOUDINARY_CLOUD_NAME')
     CLOUDINARY_API_KEY = credentials('CLOUDINARY_API_KEY')
     CLOUDINARY_API_SECRET = credentials('CLOUDINARY_API_SECRET')
