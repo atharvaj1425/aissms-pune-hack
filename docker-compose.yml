@@ -27,6 +27,8 @@ services:
       - mongo-data:/data/db
 
   frontend:
+    environment:
+    - VITE_BASE_URL=http://backend:4000
     build:
       context: ./Frontend
       dockerfile: Dockerfile
