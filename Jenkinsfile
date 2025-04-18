@@ -96,17 +96,10 @@ pipeline {
   agent any
 
   environment {
-    // this binds to the dockerhub-login credential you added
     DOCKERHUB_CREDENTIALS = credentials('dockerhub-login')
   }
 
   stages {
-    stage('Checkout') {
-      steps {
-        git 'https://github.com/atharvaj1425/aissms-pune-hack.git'
-      }
-    }
-
     stage('Install Dependencies') {
       steps {
         dir('Backend') {
