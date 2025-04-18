@@ -47,4 +47,8 @@ app.use("/api/v1/restaurants", restaurantRouter);
 app.use("/api/v1/volunteers", volunteerRouter);
 app.use("/api/v1/leaderboard", leaderboardRouter);
 
+app.get("/", (req, res) => {
+    res.send("Server is ready");
+  });  
+
 export { app };
