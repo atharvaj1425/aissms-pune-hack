@@ -5,6 +5,16 @@ import { app } from '../src/app.js';
 
 dotenv.config();
 
+process.env.TWILIO_ACCOUNT_SID = 'mock';
+process.env.TWILIO_AUTH_TOKEN = 'mock';
+process.env.TWILIO_PHONE_NUMBER = 'mock';
+process.env.CLOUDINARY_CLOUD_NAME = 'mock';
+process.env.CLOUDINARY_API_KEY = 'mock';
+process.env.CLOUDINARY_API_SECRET = 'mock';
+process.env.TOGETHER_API_KEY = 'mock';
+process.env.TOGETHER_API_URL = 'mock';
+process.env.MONGODB_URI = 'mongodb://localhost:27017/together-test'; // Use a test database
+
 beforeAll(async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI, {
