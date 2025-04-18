@@ -97,6 +97,20 @@ pipeline {
 
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub-login')
+
+    // ✅ Inject .env secrets from Jenkins credentials
+    PORT = credentials('PORT')
+    MONGODB_URI = credentials('MONGODB_URI')
+    CORS_ORIGIN = credentials('CORS_ORIGIN')
+    ACCESS_TOKEN_SECRET = credentials('ACCESS_TOKEN_SECRET')
+    ACCESS_TOKEN_EXPIRY = credentials('ACCESS_TOKEN_EXPIRY')
+    CLOUDINARY_CLOUD_NAME = credentials('CLOUDINARY_CLOUD_NAME')
+    CLOUDINARY_API_KEY = credentials('CLOUDINARY_API_KEY')
+    CLOUDINARY_API_SECRET = credentials('CLOUDINARY_API_SECRET')
+    TWILIO_ACCOUNT_SID = credentials('TWILIO_ACCOUNT_SID')
+    TWILIO_AUTH_TOKEN = credentials('TWILIO_AUTH_TOKEN')
+    TWILIO_PHONE_NUMBER = credentials('TWILIO_PHONE_NUMBER')
+    TOGETHER_API_KEY = credentials('TOGETHER_API_KEY')
   }
 
   stages {
@@ -111,19 +125,10 @@ pipeline {
       }
     }
 
-    // stage('Lint') {
-    //   steps {
-    //     dir('Frontend') {
-    //       bat 'npm run lint || echo "Lint warnings found"'
-    //     }
-    //   }
-    // }
-
     stage('Test') {
       steps {
         dir('Backend') {
-          // bat 'npm run test || echo "Backend tests failed"'
-          bat 'npx jest tests/root.test.js || echo "Backend root test failed"'
+          bat 'npm run test || echo "Backend tests failed"'
         }
         dir('Frontend') {
           bat 'npm run test || echo "Frontend tests failed"'
