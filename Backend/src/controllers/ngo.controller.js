@@ -77,10 +77,12 @@ const getAllFoodDonations = asyncHandler(async (req, res) => {
     }
 
     // Fetch all food donations with "Pending" status
-    const foodDonations = await FoodDonation.find({ status: "Pending" })
-        .populate("restaurantUser", "name") // Always populate restaurantUser
-        // .populate("volunteer", "name email") // Populate volunteer if it's assigned
-        .sort({ createdAt: -1 }); // Sort by latest
+    const foodDonations = await FoodDonation.find({ 
+            status: "Pending",
+            expiryDate: { $gte: now }  // expiry date is today or in future
+        })
+        .populate("restaurantUser", "name") 
+        .sort({ createdAt: -1 });
 
     return res.status(200).json(new ApiResponse(200, foodDonations, "Food donations fetched successfully"));
 });
